@@ -1,0 +1,120 @@
+import java.util.ArrayList;
+import java.util.Scanner;
+class Reservation {
+    String name, email, date, time;
+    int guests;
+    Reservation(String name, String email, String date, String time, int guests) {
+        this.name = name;
+        this.email = email;
+        this.date = date;
+        this.time = time;
+        this.guests = guests;
+    }
+    void display() {
+        System.out.println("Name: " + name + ", Email: " + email +
+                ", Date: " + date + ", Time: " + time +
+                ", Guests: " + guests);
+    }
+}
+public class Main {
+    static ArrayList<Reservation> reservations = new ArrayList<>();
+    static void showMenu() {
+        System.out.println("\n--- OUR MENU ---");
+        System.out.println("1. Chicken Biryani");
+        System.out.println("2. Chicken Curry");
+        System.out.println("3. Grilled Chicken");
+        System.out.println("4. Paneer Butter Masala");
+        System.out.println("5. Veg Fried Rice");
+        System.out.println("6. Chicken Noodles");
+        System.out.println("7. Mutton Biryani");
+        System.out.println("8. Fish Fry");
+        System.out.println("9. Masala Dosa");
+        System.out.println("10. Ice Cream");
+    }
+    static void reserveTable(Scanner sc) {
+        System.out.print("Enter Name: ");
+        String name = sc.nextLine();
+
+        System.out.print("Enter Email: ");
+        String email = sc.nextLine();
+
+        System.out.print("Enter Date: ");
+        String date = sc.nextLine();
+
+        System.out.print("Enter Time: ");
+        String time = sc.nextLine();
+
+        System.out.print("Enter Guests: ");
+        int guests = sc.nextInt();
+        sc.nextLine();
+
+        reservations.add(new Reservation(name, email, date, time, guests));
+        System.out.println("Reservation Successful!");
+    }
+    static void showReservations() {
+        if (reservations.isEmpty()) {
+            System.out.println("No reservations found.");
+            return;
+        }
+
+        System.out.println("\n--- RESERVATIONS ---");
+        for (Reservation r : reservations) {
+            r.display();
+        }
+    }
+    static void signup(Scanner sc) {
+        System.out.print("Enter Email: ");
+        String email = sc.nextLine();
+
+        System.out.print("Enter Password: ");
+        String password = sc.nextLine();
+
+        System.out.println("Signup Successful for: " + email);
+    }
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        int choice;
+
+        do {
+            System.out.println("\n=== MY RESTRO ===");
+            System.out.println("1. View Menu");
+            System.out.println("2. Make Reservation");
+            System.out.println("3. View Reservations");
+            System.out.println("4. Signup");
+            System.out.println("5. Exit");
+            System.out.print("Enter choice: ");
+
+            choice = sc.nextInt();
+            sc.nextLine();
+
+            switch (choice) {
+                case 1:
+                    showMenu();
+                    break;
+
+                case 2:
+                    reserveTable(sc);
+                    break;
+
+                case 3:
+                    showReservations();
+                    break;
+
+                case 4:
+                    signup(sc);
+                    break;
+
+                case 5:
+                    System.out.println("Thank you for visiting My Restro!");
+                    break;
+
+                default:
+                    System.out.println("Invalid choice!");
+            }
+
+        } while (choice != 5);
+
+        sc.close();
+    }
+}
