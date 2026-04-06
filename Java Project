@@ -1,0 +1,266 @@
+import java.util.*;
+class User {
+    String username, password;
+
+    User(String u, String p) {
+        username = u;
+        password = p;
+    }
+}
+class OrderItem {
+    String name;
+    int price, quantity;
+
+    OrderItem(String n, int p, int q) {
+        name = n;
+        price = p;
+        quantity = q;
+    }
+
+    int getTotal() {
+        return price * quantity;
+    }
+}
+class Reservation {
+    String name, email, date, time;
+    int guests;
+
+    Reservation(String n, String e, String d, String t, int g) {
+        name = n;
+        email = e;
+        date = d;
+        time = t;
+        guests = g;
+    }
+
+    void display() {
+        System.out.println(name + " | " + date + " | " + time + " | Guests: " + guests);
+    }
+}
+
+public class Main {
+
+    static ArrayList<User> users = new ArrayList<>();
+    static ArrayList<Reservation> reservations = new ArrayList<>();
+
+    static void signup(Scanner sc) {
+        System.out.print("Enter Username: ");
+        String u = sc.next();
+
+        System.out.print("Enter Password: ");
+        String p = sc.next();
+
+        users.add(new User(u, p));
+        System.out.println("Signup Successful!");
+    }
+
+    static void showMenu() {
+        System.out.println("\n--- MENU ---");
+        System.out.println("1. Chicken Biryani - ₹200");
+        System.out.println("2. Chicken Curry - ₹180");
+        System.out.println("3. Grilled Chicken - ₹250");
+        System.out.println("4. Paneer Butter Masala - ₹150");
+        System.out.println("5. Veg Fried Rice - ₹120");
+        System.out.println("6. Chicken Noodles - ₹140");
+        System.out.println("7. Mutton Biryani - ₹300");
+        System.out.println("8. Fish Fry - ₹220");
+        System.out.println("9. Masala Dosa - ₹80");
+        System.out.println("10. Ice Cream - ₹60");
+    }
+
+    static void orderFood(Scanner sc) {
+        ArrayList<OrderItem> orderList = new ArrayList<>();
+
+        showMenu();
+
+        System.out.print("Enter number of DIFFERENT items: ");
+        int n = sc.nextInt();
+
+        for (int i = 0; i < n; i++) {
+            System.out.print("\nEnter item number: ");
+            int item = sc.nextInt();
+
+            System.out.print("Enter quantity: ");
+            int qty = sc.nextInt();
+
+            String name = "";
+            int price = 0;
+
+            switch (item) {
+                case 1: name = "Chicken Biryani"; price = 200; break;
+                case 2: name = "Chicken Curry"; price = 180; break;
+                case 3: name = "Grilled Chicken"; price = 250; break;
+                case 4: name = "Paneer Butter Masala"; price = 150; break;
+                case 5: name = "Veg Fried Rice"; price = 120; break;
+                case 6: name = "Chicken Noodles"; price = 140; break;
+                case 7: name = "Mutton Biryani"; price = 300; break;
+                case 8: name = "Fish Fry"; price = 220; break;
+                case 9: name = "Masala Dosa"; price = 80; break;
+                case 10: name = "Ice Cream"; price = 60; break;
+                default:
+                    System.out.println("Invalid!");
+                    i--;
+                    continue;
+            }
+
+            boolean found = false;
+            for (OrderItem oi : orderList) {
+                if (oi.name.equals(name)) {
+                    oi.quantity += qty;
+                    found = true;
+                    break;
+                }
+            }
+
+            if (!found) {
+                orderList.add(new OrderItem(name, price, qty));
+            }
+
+            System.out.println(name + " added!");
+        }
+
+        int total = 0;
+        System.out.println("\n===== BILL =====");
+        System.out.printf("%-25s %-10s %-10s\n", "Item", "Qty", "Total");
+        System.out.println("-------------------------------------------");
+
+        for (OrderItem oi : orderList) {
+            System.out.printf("%-25s %-10d ₹%-10d\n", oi.name, oi.quantity, oi.getTotal());
+            total += oi.getTotal();
+        }
+
+        System.out.println("-------------------------------------------");
+        System.out.println("TOTAL = ₹" + total);
+    }
+
+    static void reserveTable(Scanner sc) {
+        sc.nextLine();
+
+        System.out.print("Enter Name: ");
+        String name = sc.nextLine();
+
+        System.out.print("Email: ");
+        String email = sc.nextLine();
+
+        System.out.print("Date: ");
+        String date = sc.nextLine();
+
+        System.out.print("Time: ");
+        String time = sc.nextLine();
+
+        System.out.print("Guests: ");
+        int guests = sc.nextInt();
+
+        reservations.add(new Reservation(name, email, date, time, guests));
+        System.out.println("Reservation Done!");
+    }
+
+    static void viewReservations() {
+        if (reservations.isEmpty()) {
+            System.out.println("No reservations.");
+            return;
+        }
+
+        for (Reservation r : reservations) {
+            r.display();
+        }
+    }
+
+    static void searchReservation(Scanner sc) {
+        sc.nextLine();
+        System.out.print("Enter Name to Search: ");
+        String name = sc.nextLine();
+
+        boolean found = false;
+
+        for (Reservation r : reservations) {
+            if (r.name.equalsIgnoreCase(name)) {
+                r.display();
+                found = true;
+            }
+        }
+
+        if (!found) {
+            System.out.println("Not found!");
+        }
+    }
+
+    static void updateReservation(Scanner sc) {
+        sc.nextLine();
+        System.out.print("Enter Name to Update: ");
+        String name = sc.nextLine();
+
+        for (Reservation r : reservations) {
+            if (r.name.equalsIgnoreCase(name)) {
+
+                System.out.print("New Date: ");
+                r.date = sc.nextLine();
+
+                System.out.print("New Time: ");
+                r.time = sc.nextLine();
+
+                System.out.print("New Guests: ");
+                r.guests = sc.nextInt();
+
+                System.out.println("Updated!");
+                return;
+            }
+        }
+
+        System.out.println("Not found!");
+    }
+
+    static void cancelReservation(Scanner sc) {
+        sc.nextLine();
+        System.out.print("Enter Name to Cancel: ");
+        String name = sc.nextLine();
+
+        Iterator<Reservation> it = reservations.iterator();
+
+        while (it.hasNext()) {
+            Reservation r = it.next();
+            if (r.name.equalsIgnoreCase(name)) {
+                it.remove();
+                System.out.println("Cancelled!");
+                return;
+            }
+        }
+
+        System.out.println("Not found!");
+    }
+
+    public static void main(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        int choice;
+
+        do {
+            System.out.println("\n=== MY RESTAURANT SYSTEM ===");
+            System.out.println("1. Signup");
+            System.out.println("2. Order Food");
+            System.out.println("3. Reserve Table");
+            System.out.println("4. View Reservations");
+            System.out.println("5. Search Reservation");
+            System.out.println("6. Update Reservation");
+            System.out.println("7. Cancel Reservation");
+            System.out.println("8. Exit");
+
+            System.out.print("Choice: ");
+            choice = sc.nextInt();
+
+            switch (choice) {
+                case 1: signup(sc); break;
+                case 2: orderFood(sc); break;
+                case 3: reserveTable(sc); break;
+                case 4: viewReservations(); break;
+                case 5: searchReservation(sc); break;
+                case 6: updateReservation(sc); break;
+                case 7: cancelReservation(sc); break;
+                case 8: System.out.println("Thank You!"); break;
+                default: System.out.println("Invalid!");
+            }
+
+        } while (choice != 8);
+
+        sc.close();
+    }
+}
