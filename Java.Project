@@ -16,7 +16,7 @@ class Reservation {
                 ", Guests: " + guests);
     }
 }
-public class Main {
+public class RestroApp {
     static ArrayList<Reservation> reservations = new ArrayList<>();
     static void showMenu() {
         System.out.println("\n--- OUR MENU ---");
